@@ -1,0 +1,23 @@
+{
+  "name": "jest",
+  "jest": {
+    "transform": {
+      "\\.[jt]sx?$": "babel-jest"
+    }
+  },
+  "type": "module",
+  "version": "1.0.0",
+  "description": "jest intro",
+  "main": "main.js",
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watchAll",
+    "testwatch": "jest --watchAll",
+    "cardio": "node jscardio.js"
+  },
+  "author": "David King",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "jest": "^28.0.3"
+  }
+}
