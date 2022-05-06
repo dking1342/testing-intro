@@ -1,3 +1,5 @@
+
+
 const checkForShip = (player, coordinates) => {
   let { ships } = player;
 
@@ -20,11 +22,18 @@ const damageShip = (ship, coordinates) => {
   return damageShipOutput;
 };
 
-const fire = (player, coordinates) => {
+const fire = (player, coordinates = null) => {
+  if(!coordinates) throw Error("You do not have any coordinates");
   if (checkForShip(player, coordinates)) {
     return damageShip(player.ships[0], coordinates);
   }
   return player;
 };
 
-export { checkForShip, damageShip, fire };
+const takeTurn = (player, guess) => {
+  const coordinate = guess();
+  fire(player, coordinate);
+  return false;
+}
+
+export { checkForShip, damageShip, fire, takeTurn };
