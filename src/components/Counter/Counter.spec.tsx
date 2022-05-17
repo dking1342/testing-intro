@@ -1,7 +1,6 @@
-import { fireEvent, waitFor } from "@testing-library/dom";
+import { fireEvent } from "@testing-library/dom";
 import { render, RenderResult, screen } from "@testing-library/react";
 import Counter, { CounterProps } from "./Counter";
-import userEvent from "@testing-library/user-event";
 
 type setupFn = (props: CounterProps) => RenderResult;
 const setup: setupFn = ({ description, defaultCount }) =>
