@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { cleanup } from "@testing-library/react";
+import React, { useEffect, useState } from "react";
 
 export interface CounterProps {
   description: string;
@@ -8,6 +9,24 @@ export interface CounterProps {
 const Counter = ({ description, defaultCount }: CounterProps) => {
   const [count, setCount] = useState(defaultCount);
   const [incrementor, setIncrementor] = useState(1);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    let active: boolean = true;
+    // let id: NodeJS.Timeout;
+
+    if (count >= 15) {
+      // id = setTimeout(()=> setLoading(true), 200);
+      setTimeout(() => {
+        if (active) setLoading(true);
+      }, 200);
+    }
+
+    return () => {
+      // clearTimeout(id);
+      active = false;
+    };
+  }, [count]);
 
   return (
     <div>
@@ -43,6 +62,7 @@ const Counter = ({ description, defaultCount }: CounterProps) => {
       >
         ++
       </button>
+      {loading ? null : <div>loading</div>}
     </div>
   );
 };

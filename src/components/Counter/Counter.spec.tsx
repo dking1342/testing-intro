@@ -1,5 +1,5 @@
-import { fireEvent } from "@testing-library/dom";
-import { render, RenderResult, screen } from "@testing-library/react";
+import { fireEvent, waitForElementToBeRemoved } from "@testing-library/dom";
+import { cleanup, render, RenderResult, screen } from "@testing-library/react";
 import Counter, { CounterProps } from "./Counter";
 
 type setupFn = (props: CounterProps) => RenderResult;
@@ -70,15 +70,17 @@ describe("Counter", () => {
   });
 
   describe("async incrementor changes and ++ button is pressed", () => {
-    let inputElement: HTMLInputElement, addBtn: HTMLButtonElement;
+    let inputElement: HTMLInputElement,
+      addBtn: HTMLButtonElement,
+      addSyncBtn: HTMLButtonElement;
     beforeEach(async () => {
       setup({ description, defaultCount });
       inputElement = screen.getByRole("spinbutton", { name: /changer/i });
       addBtn = screen.getByRole("button", { name: /async/i });
-      // await waitFor(() => screen.findByText(/current count: 10/i));
+      addSyncBtn = screen.getByRole("button", { name: /increment/i });
     });
 
-    fit("incrementor value is 10 and current count is 10", async () => {
+    it("incrementor value is 10 and current count is 10", async () => {
       fireEvent.change(inputElement, { target: { value: 10 } });
       fireEvent.click(addBtn);
 
@@ -89,6 +91,13 @@ describe("Counter", () => {
       fireEvent.click(addBtn);
       // await waitFor(() => screen.findByText(/current count: 20/i));
       await screen.findByText(/current count: 20/i);
+    });
+
+    it("renders loading and will disappear after 200ms", async () => {
+      // setup({ description, defaultCount });
+      fireEvent.change(inputElement, { target: { value: 20 } });
+      fireEvent.click(addSyncBtn);
+      await waitForElementToBeRemoved(() => screen.queryByText("loading"));
     });
   });
 });
